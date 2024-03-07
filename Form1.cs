@@ -9,7 +9,10 @@ namespace Othello
 
         private void button1_Click(object sender, EventArgs e)
         {
+            this.Hide();
 
+            MainGame form2 = new MainGame();
+            form2.Show();
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -19,17 +22,23 @@ namespace Othello
 
         private void button2_Click(object sender, EventArgs e)
         {
+            this.Hide();
 
+            Rules form3 = new Rules();
+            form3.Show();
         }
 
         private void Settings_Click(object sender, EventArgs e)
         {
+            this.Hide();
 
+            Settings form4 = new Settings();
+            form4.Show();
         }
 
         private void Quit_Click(object sender, EventArgs e)
         {
-
+            this.Close();
         }
     }
 }
