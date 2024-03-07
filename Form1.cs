@@ -11,7 +11,7 @@ namespace Othello
         {
             this.Hide();
 
-            MainGame form2 = new MainGame();
+            Difficulty form2 = new Difficulty();
             form2.Show();
         }
 
@@ -38,7 +38,7 @@ namespace Othello
 
         private void Quit_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Application.Exit();
         }
     }
 }

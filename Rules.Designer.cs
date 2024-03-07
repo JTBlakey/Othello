@@ -41,9 +41,10 @@
             this.Back.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(103)))), ((int)(((byte)(54)))));
             this.Back.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Back.Font = new System.Drawing.Font("Segoe UI", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.Back.Location = new System.Drawing.Point(260, 571);
+            this.Back.Location = new System.Drawing.Point(297, 761);
+            this.Back.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Back.Name = "Back";
-            this.Back.Size = new System.Drawing.Size(200, 100);
+            this.Back.Size = new System.Drawing.Size(229, 133);
             this.Back.TabIndex = 4;
             this.Back.Text = "Back";
             this.Back.UseVisualStyleBackColor = false;
@@ -51,23 +52,30 @@
             // 
             // RulesText
             // 
+            this.RulesText.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.RulesText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(103)))), ((int)(((byte)(54)))));
+            this.RulesText.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.RulesText.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.RulesText.Location = new System.Drawing.Point(12, 12);
+            this.RulesText.Location = new System.Drawing.Point(14, 16);
+            this.RulesText.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.RulesText.Multiline = true;
             this.RulesText.Name = "RulesText";
-            this.RulesText.Size = new System.Drawing.Size(680, 553);
+            this.RulesText.Size = new System.Drawing.Size(777, 736);
             this.RulesText.TabIndex = 5;
             this.RulesText.Text = resources.GetString("RulesText.Text");
             this.RulesText.TextChanged += new System.EventHandler(this.RulesText_TextChanged);
             // 
             // Rules
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(45)))), ((int)(((byte)(87)))));
-            this.ClientSize = new System.Drawing.Size(704, 681);
+            this.ClientSize = new System.Drawing.Size(805, 908);
             this.Controls.Add(this.RulesText);
             this.Controls.Add(this.Back);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "Rules";
             this.Text = "Rules";
             this.ResumeLayout(false);
