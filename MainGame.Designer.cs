@@ -28,7 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.Quit = new System.Windows.Forms.Button();
             this.SuspendLayout();
+            // 
+            // Quit
+            // 
+            this.Quit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Quit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(103)))), ((int)(((byte)(54)))));
+            this.Quit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Quit.Font = new System.Drawing.Font("Segoe UI", 22.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.Quit.Location = new System.Drawing.Point(554, 586);
+            this.Quit.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.Quit.Name = "Quit";
+            this.Quit.Size = new System.Drawing.Size(136, 74);
+            this.Quit.TabIndex = 10;
+            this.Quit.Text = "Quit";
+            this.Quit.UseVisualStyleBackColor = false;
+            this.Quit.Click += new System.EventHandler(this.Quit_Click_1);
             // 
             // MainGame
             // 
@@ -36,12 +52,16 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(45)))), ((int)(((byte)(87)))));
             this.ClientSize = new System.Drawing.Size(702, 673);
+            this.Controls.Add(this.Quit);
             this.Name = "MainGame";
             this.Text = "MainGame";
+            this.Load += new System.EventHandler(this.MainGame_Load);
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private Button Quit;
     }
 }
