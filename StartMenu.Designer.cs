@@ -1,6 +1,6 @@
 ﻿namespace Othello
 {
-    partial class Form1
+    partial class StartMenu
     {
         /// <summary>
         ///  Required designer variable.

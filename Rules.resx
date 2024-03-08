@@ -58,11 +58,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="RulesText.Text" xml:space="preserve">
-    <value>Othello, also known as Reversi, is a classic board game that involves strategy and skill. Here are 10 simple rules to follow when playing Othello:
+    <value>
+Here are 10 simple rules to follow when playing Othello:
 
-Setup: Begin with an 8x8 game board with two players. Each player gets 32 discs, one color for each player (usually black and white). Place four discs in the center of the board in a specific pattern: two black discs on D4 and E5, and two white discs on D5 and E4.
-
-Starting Player: Decide who goes first. Players can flip a coin, or one player can choose a color and the other takes the opposite color.
+Starting Player: Wether the Player or Computer go first will be decided by random. The starting player will be white.
 
 Turns: Players take turns placing one disc of their color on the board. The disc must be placed on an empty square adjacent to an opponent's disc in a way that encloses one or more of the opponent's discs between the new disc and another disc of the player's color.
 
@@ -70,15 +69,9 @@ Flipping Discs: When a player places a disc, any opponent's discs that are enclo
 
 Legal Moves: A move is legal only if it results in at least one of the opponent's discs being flipped. If a player cannot make a legal move, their turn is forfeited.
 
-Corner Squares: Corner squares are strategically important because once they are occupied, they cannot be flipped. Players often aim to secure corner squares early in the game.
-
-Edge Squares: Edge squares are also valuable, as they can provide stability and control over the board. Players should aim to control as many edge squares as possible.
-
 Endgame: The game ends when neither player can make a legal move. The player with the most discs of their color on the board wins.
 
 Counting Discs: Both players count the number of their colored discs on the board. The player with the most discs of their color wins. In case of a tie, the game is considered a draw.
-
-Good Sportsmanship: Remember to respect your opponent and play with integrity. Othello is a game of strategy and skill, so be gracious in both victory and defeat.
 
 Following these simple rules will help you enjoy a challenging and rewarding game of Othello!</value>
   </data>

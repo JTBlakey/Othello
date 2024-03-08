@@ -21,7 +21,7 @@ namespace Othello
         {
             this.Hide();
 
-            Form1 form1 = new Form1();
+            StartMenu form1 = new StartMenu();
             form1.Show();
         }
 

@@ -1,8 +1,8 @@
 namespace Othello
 {
-    public partial class Form1 : Form
+    public partial class StartMenu : Form
     {
-        public Form1()
+        public StartMenu()
         {
             InitializeComponent();
         }
