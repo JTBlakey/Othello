@@ -39,7 +39,7 @@ namespace Othello
                     cell.Margin = new Padding(0); // make sure button takes up whole space of cell
                     cell.FlatStyle = FlatStyle.Flat; //remove 3d effect of button
                     cell.FlatAppearance.BorderSize = 1; //adds a border to the button
-                    cell.Click += Cell_Click; // adds an event handler to the press of a button
+                    cell.Click += UserMove; // adds an event handler to the press of a button
                     board.Controls.Add(cell, col, row); // adds button to the speciffied cell
                     cells[row, col] = cell; // stores a referance to the button in an array: cells
                 }
@@ -50,22 +50,48 @@ namespace Othello
             board.Controls[middleLocation - 1 + middleLocation * 8].BackColor = Color.Black;
             board.Controls[middleLocation + middleLocation * 8].BackColor = Color.White;
         }
-        private void Cell_Click(object sender, EventArgs e)
-        {
-            // Handle cell click event (e.g., player move)
-            Button clickedCell = sender as Button;
-            // Your logic to handle player moves and update the game board goes here
-        }
         public enum Piece
         {
             Empty,
             Black,
-            white
+            White
         }
 
-        public void UserMove()
+        private void UserMove(object sender, EventArgs e)
         {
+            Button clickedButton = (Button)sender;
 
+            // Find the row and column indices of the clicked button
+            int row = -1, col = -1;
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    if (cells[i, j] == clickedButton)
+                    {
+                        row = i;
+                        col = j;
+                        break;
+                    }
+                }
+                if (row != -1 && col != -1)
+                    break;
+            }
+
+            // Check if the clicked position represents a legal move
+            if (row != -1 && col != -1 && IsLegalMove(row, col, Piece.White))
+            {
+                // Place the user's piece at the clicked position
+                PlacePiece(row, col, Piece.White);
+
+                // Update the UI or game board accordingly
+                // Add any additional logic as needed
+            }
+            else
+            {
+                // Handle the case where the user clicked on an illegal move
+                // For example, display a message indicating that the move is not allowed
+            }
         }
         public void AImove(int difficulty)
         {
@@ -121,11 +147,8 @@ namespace Othello
             int randomNumber = random.Next(1, 3); // Generates random number between 1 and 2 (inclusive)
             if (randomNumber == 1)
             {
-                UserMove();
-            }
-            else
                 AImove(1);
-            
+            }   
         }
 
         private void Quit_Click_1(object sender, EventArgs e)
