@@ -37,7 +37,6 @@ namespace Othello
                     cell.Click += Cell_Click; // adds an event handler to the press of a button
                     board.Controls.Add(cell, col, row); // adds button to the speciffied cell
                     cells[row, col] = cell; // stores a referance to the button in an array: cells
-                    
                 }
             }
             int middleLocation = 4; //set up four starting pieces
@@ -115,7 +114,8 @@ namespace Othello
             {
                 for (int col = 0; col < 8; col++)
                 {
-                    if (cells[row,col].BackColor == Color.Empty && IsLegalMove(row,col,color))
+
+                    if (IsLegalMove(row,col,color) == true)
                     {
                         legalMoves.Add(new Point(row, col));
                     }
@@ -127,30 +127,30 @@ namespace Othello
         private bool IsLegalMove(int row, int col,Piece color)
         {
             // Check if the specified position is empty
-            if (cells[row, col].BackColor != Color.Empty)
-                return false;
+            if (cells[row, col].BackColor != Color.FromArgb(255, 252, 103, 54))
+            return false;
 
             // Check in all eight directions for opponent pieces that can be flipped
             for (int dr = -1; dr <= 1; dr++)
             {
                 for (int dc = -1; dc <= 1; dc++)
                 {
-                    // Skip the current position (0, 0) as it represents the current cell
+                    // Skip the current position(0, 0) as it represents the current cell
                     if (dr == 0 && dc == 0)
                         continue;
 
-                    // Check if there's an opponent piece in the current direction
+                    // Check if an opponent piece in the current direction
                     int r = row + dr;
                     int c = col + dc;
                     bool foundOpponentPiece = false;
-                    while (r >= 0 && r < 8 && c >= 0 && c < 8 && cells[r, c].BackColor != Color.Empty && cells[r, c].BackColor != Color.Black && cells[r, c].BackColor != Color.White)
+                    while (r >= 0 && r < 8 && c >= 0 && c < 8 && cells[r, c].BackColor != Color.FromArgb(255, 252, 103, 54) && cells[r, c].BackColor != Color.Black && cells[r, c].BackColor != Color.White)
                     {
                         foundOpponentPiece = true;
                         r += dr;
                         c += dc;
                     }
 
-                    // If we found an opponent piece and encountered our own piece in this direction, the move is legal
+                    // If an opponent piece and our own piece in this direction, the move is legal
                     if (r >= 0 && r < 8 && c >= 0 && c < 8 && foundOpponentPiece && cells[r, c].BackColor == (color == Piece.Black ? Color.White : Color.Black))
                         return true;
                 }
