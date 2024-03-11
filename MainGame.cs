@@ -101,6 +101,8 @@ namespace Othello
         private void PlacePiece(int row, int col, Piece color)
         {
             // Update the cell colour to the player's colour
+            
+            
             cells[row, col].BackColor = (color == Piece.Black) ? Color.Black : Color.White;
 
             // Update the game board representation (if necessary)
@@ -127,7 +129,7 @@ namespace Othello
         private bool IsLegalMove(int row, int col,Piece color)
         {
             // Check if the specified position is empty
-            if (cells[row, col].BackColor != Color.FromArgb(255, 252, 103, 54))
+            if (cells[row, col].BackColor != Color.FromArgb( 255, 252, 103, 54))
             return false;
 
             // Check in all eight directions for opponent pieces that can be flipped
@@ -143,15 +145,17 @@ namespace Othello
                     int r = row + dr;
                     int c = col + dc;
                     bool foundOpponentPiece = false;
-                    while (r >= 0 && r < 8 && c >= 0 && c < 8 && cells[r, c].BackColor != Color.FromArgb(255, 252, 103, 54) && cells[r, c].BackColor != Color.Black && cells[r, c].BackColor != Color.White)
+                    while (r >= 0 && r < 8 && c >= 0 && c < 8 && cells[r, c].BackColor != Color.FromArgb(255, 252, 103, 54) && cells[r, c].BackColor != ((color == Piece.Black) ? Color.Black : Color.White))
                     {
                         foundOpponentPiece = true;
                         r += dr;
                         c += dc;
+
+
                     }
 
                     // If an opponent piece and our own piece in this direction, the move is legal
-                    if (r >= 0 && r < 8 && c >= 0 && c < 8 && foundOpponentPiece && cells[r, c].BackColor == (color == Piece.Black ? Color.White : Color.Black))
+                    if (r >= 0 && r < 8 && c >= 0 && c < 8 && foundOpponentPiece && cells[r, c].BackColor == ((color == Piece.Black) ? Color.Black : Color.White))
                         return true;
                 }
             }
