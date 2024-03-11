@@ -1,6 +1,6 @@
 ﻿namespace Othello
 {
-    partial class Difficulty
+    partial class DifficultySet
     {
         /// <summary>
         /// Required designer variable.

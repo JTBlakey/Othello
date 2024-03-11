@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,9 +12,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static Othello.DifficultySet;
+using static System.Windows.Forms.DataFormats;
 
 namespace Othello
 {
+    
     public partial class MainGame : Form
     {
         
@@ -62,7 +67,24 @@ namespace Othello
         {
 
         }
-        public void AImove()
+        public void AImove(int difficulty)
+        {
+         
+            if (difficulty == 1)
+            {
+                AImove1();
+            }
+            if (difficulty == 2)
+            {
+                AImove2();
+            }
+            if (difficulty == 3)
+            {
+                AImove3();
+            }
+        }
+
+        public void AImove1()
         {
             List<Point> legalMoves = GetLegalMoves(Piece.Black); // get all legal moves
 
@@ -79,19 +101,31 @@ namespace Othello
                 GameEnd();
             }
         }
+        public void AImove2()
+        {
+
+        }
+        public void AImove3()
+        {
+
+        }
         public MainGame()
         {
             InitializeComponent();
             InitializeGameBoard();
-
         }
 
         private void MainGame_Load(object sender, EventArgs e)
         {
+            Random random = new Random();
+            int randomNumber = random.Next(1, 3); // Generates random number between 1 and 2 (inclusive)
+            if (randomNumber == 1)
+            {
+                UserMove();
+            }
+            else
+                AImove(1);
             
-            AImove();
-            
-
         }
 
         private void Quit_Click_1(object sender, EventArgs e)

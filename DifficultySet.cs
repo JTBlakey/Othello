@@ -11,11 +11,23 @@ using System.Windows.Forms;
 
 namespace Othello
 {
-    public partial class Difficulty : Form
+    public enum Difficulty
     {
-        public int difficulty = 0;
+        Easy,
+        Medium,
+        Hard
+    }
+    public partial class DifficultySet : Form
+    {
+        public static Difficulty CurrentDifficulty { get; set; }
 
-        public Difficulty()
+        public enum Difficulty
+        {
+            Easy,
+            Medium,
+            Hard
+        }
+        public DifficultySet()
         {
             InitializeComponent();
         }
@@ -32,7 +44,7 @@ namespace Othello
 
         private void Easy_Click(object sender, EventArgs e)
         {
-            difficulty = 1;
+            CurrentDifficulty = Difficulty.Easy;
             this.Hide();
 
             MainGame form3 = new MainGame();
@@ -41,7 +53,7 @@ namespace Othello
 
         private void Medium_Click(object sender, EventArgs e)
         {
-            difficulty = 2;
+            CurrentDifficulty = Difficulty.Medium;
             this.Hide();
 
             MainGame form3 = new MainGame();
@@ -50,7 +62,7 @@ namespace Othello
 
         private void Hard_Click(object sender, EventArgs e)
         {
-            difficulty = 3;
+            CurrentDifficulty = Difficulty.Hard;
             this.Hide();
 
             MainGame form3 = new MainGame();

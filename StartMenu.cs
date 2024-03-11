@@ -11,7 +11,7 @@ namespace Othello
         {
             this.Hide();
 
-            Difficulty form2 = new Difficulty();
+            DifficultySet form2 = new DifficultySet();
             form2.Show();
         }
 
