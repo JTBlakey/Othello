@@ -83,7 +83,8 @@ namespace Othello
             {
                 // Place the user's piece at the clicked position
                 PlacePiece(row, col, Piece.White);
-
+                
+                AImove(1);
                 // Update the UI or game board accordingly
                 // Add any additional logic as needed
             }
@@ -112,6 +113,7 @@ namespace Othello
 
         public void AImove1()
         {
+            
             List<Point> legalMoves = GetLegalMoves(Piece.Black); // get all legal moves
 
             if (legalMoves.Count > 0)
@@ -158,13 +160,46 @@ namespace Othello
         private void PlacePiece(int row, int col, Piece color)
         {
             // Update the cell colour to the player's colour
-            
-            
             cells[row, col].BackColor = (color == Piece.Black) ? Color.Black : Color.White;
 
-            // Update the game board representation (if necessary)
-            // You might have additional logic here depending on how you're representing the game board
+            // Flip opponent's pieces
+            for (int dr = -1; dr <= 1; dr++)
+            {
+                for (int dc = -1; dc <= 1; dc++)
+                {
+                    if (dr == 0 && dc == 0)
+                        continue; // Skip the current position
+
+                    int r = row + dr;
+                    int c = col + dc;
+                    bool foundOpponentPiece = false;
+
+                    // Search in the current direction for opponent pieces
+                    while (r >= 0 && r < 8 && c >= 0 && c < 8 && cells[r, c].BackColor != Color.FromArgb(255, 252, 103, 54))
+                    {
+                        if (cells[r, c].BackColor == ((color == Piece.Black) ? Color.White : Color.Black))
+                        {
+                            foundOpponentPiece = true;
+                        }
+                        else if (foundOpponentPiece)
+                        {
+                            // If we've found an opponent piece and then the current piece is of the same color, flip the enclosed opponent pieces
+                            while (r != row || c != col)
+                            {
+                                cells[r, c].BackColor = (color == Piece.Black) ? Color.Black : Color.White;
+                                r -= dr;
+                                c -= dc;
+                            }
+                            break;
+                        }
+                        r += dr;
+                        c += dc;
+                    }
+                }
+            }
+            Thread.Sleep(150);
         }
+    
         private List<Point> GetLegalMoves(Piece color)
         {
             List<Point> legalMoves = new List<Point>();
