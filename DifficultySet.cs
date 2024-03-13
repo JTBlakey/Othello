@@ -19,7 +19,7 @@ namespace Othello
     }
     public partial class DifficultySet : Form
     {
-        public static Difficulty CurrentDifficulty { get; set; }
+        //public static Difficulty CurrentDifficulty { get; set; }
 
         public enum Difficulty
         {
@@ -44,28 +44,28 @@ namespace Othello
 
         private void Easy_Click(object sender, EventArgs e)
         {
-            CurrentDifficulty = Difficulty.Easy;
+            //CurrentDifficulty = Difficulty.Easy;
             this.Hide();
 
-            MainGame form3 = new MainGame();
+            MainGame form3 = new MainGame(Difficulty.Easy);
             form3.Show();
         }
 
         private void Medium_Click(object sender, EventArgs e)
         {
-            CurrentDifficulty = Difficulty.Medium;
+            //CurrentDifficulty = Difficulty.Medium;
             this.Hide();
 
-            MainGame form3 = new MainGame();
+            MainGame form3 = new MainGame(Difficulty.Medium);
             form3.Show();
         }
 
         private void Hard_Click(object sender, EventArgs e)
         {
-            CurrentDifficulty = Difficulty.Hard;
+            //CurrentDifficulty = Difficulty.Hard;
             this.Hide();
 
-            MainGame form3 = new MainGame();
+            MainGame form3 = new MainGame(Difficulty.Hard);
             form3.Show();
         }
     }

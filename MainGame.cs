@@ -1,34 +1,19 @@
-﻿
-
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Drawing.Text;
-
-
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static Othello.DifficultySet;
-using static System.Windows.Forms.DataFormats;
-
-namespace Othello
+﻿namespace Othello
 {
-    
+
     public partial class MainGame : Form
     {
         private const int BoardSize = 8;
         private Button[,] cells;
-        
+
+        public DifficultySet.Difficulty difficulty;
+
         private void InitializeGameBoard()
         {
-            
+
             board.RowCount = BoardSize; // set up board size
             board.ColumnCount = BoardSize;
-            cells = new Button[BoardSize, BoardSize]; 
+            cells = new Button[BoardSize, BoardSize];
 
             for (int row = 0; row < BoardSize; row++) // create a button for each cell in board 
             {
@@ -78,25 +63,25 @@ namespace Othello
             if (row != -1 && col != -1 && IsLegalMove(row, col, Piece.White)) // check if a legal move
             {
                 PlacePiece(row, col, Piece.White); // place the user's piece at the clicked position
-                AImove(2);
+                AImove(this.difficulty);
             }
             else
             {
                 // display a message saying the move not allowed
             }
         }
-        public void AImove(int difficulty)
+        public void AImove(DifficultySet.Difficulty difficulty)
         {
-         
-            if (difficulty == 1)
+
+            if (difficulty == DifficultySet.Difficulty.Easy)
             {
                 AImove1();
             }
-            if (difficulty == 2)
+            if (difficulty == DifficultySet.Difficulty.Medium)
             {
                 AImove2();
             }
-            if (difficulty == 3)
+            if (difficulty == DifficultySet.Difficulty.Hard)
             {
                 AImove3();
             }
@@ -104,7 +89,7 @@ namespace Othello
 
         public void AImove1()
         {
-            
+
             List<Point> legalMoves = GetLegalMoves(Piece.Black); // get all legal moves
 
             if (legalMoves.Count > 0)
@@ -133,7 +118,7 @@ namespace Othello
                 {
                     int score = EvaluateMove(move.X, move.Y, Piece.Black, 1); // evaluate the move using a depth of 1
 
-                    
+
                     if (score > bestScore) // update the best move if the current move has a higher score
                     {
                         bestScore = score;
@@ -198,8 +183,10 @@ namespace Othello
             return score;
         }
 
-        public MainGame()
+        public MainGame(DifficultySet.Difficulty difficulty)
         {
+            this.difficulty = difficulty;
+
             InitializeComponent();
             InitializeGameBoard();
         }
@@ -210,8 +197,8 @@ namespace Othello
             int randomNumber = random.Next(1, 3); // generates random number between 1 and 2
             if (randomNumber == 1)
             {
-                AImove(2);
-            }   
+                AImove(this.difficulty);
+            }
         }
 
         private void Quit_Click_1(object sender, EventArgs e)
@@ -232,7 +219,7 @@ namespace Othello
                     int r = row + dr;
                     int c = col + dc;
                     bool foundOpponentPiece = false;
-                    
+
                     while (r >= 0 && r < BoardSize && c >= 0 && c < BoardSize && cells[r, c].BackColor != Color.FromArgb(255, 252, 103, 54)) // search in the current direction for opponent pieces
                     {
                         if (cells[r, c].BackColor == ((color == Piece.Black) ? Color.White : Color.Black))
@@ -257,7 +244,7 @@ namespace Othello
             }
             Thread.Sleep(150);
         }
-    
+
         private List<Point> GetLegalMoves(Piece color)
         {
             List<Point> legalMoves = new List<Point>();
@@ -267,7 +254,7 @@ namespace Othello
                 for (int col = 0; col < BoardSize; col++)
                 {
 
-                    if (IsLegalMove(row,col,color) == true)
+                    if (IsLegalMove(row, col, color) == true)
                     {
                         legalMoves.Add(new Point(row, col));
                     }
@@ -276,11 +263,11 @@ namespace Othello
             return legalMoves;
         }
 
-        private bool IsLegalMove(int row, int col,Piece color)
+        private bool IsLegalMove(int row, int col, Piece color)
         {
             // Check if the specified position is empty
-            if (cells[row, col].BackColor != Color.FromArgb( 255, 252, 103, 54))
-            return false;
+            if (cells[row, col].BackColor != Color.FromArgb(255, 252, 103, 54))
+                return false;
 
             // Check in all eight directions for opponent pieces that can be flipped
             for (int dr = -1; dr <= 1; dr++)
@@ -314,7 +301,7 @@ namespace Othello
         }
         private void GameEnd()
         {
-            
+
         }
     }
 }
