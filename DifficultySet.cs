@@ -44,7 +44,6 @@ namespace Othello
 
         private void Easy_Click(object sender, EventArgs e)
         {
-            //CurrentDifficulty = Difficulty.Easy;
             this.Hide();
 
             MainGame form3 = new MainGame(Difficulty.Easy);
@@ -53,7 +52,6 @@ namespace Othello
 
         private void Medium_Click(object sender, EventArgs e)
         {
-            //CurrentDifficulty = Difficulty.Medium;
             this.Hide();
 
             MainGame form3 = new MainGame(Difficulty.Medium);
@@ -62,7 +60,6 @@ namespace Othello
 
         private void Hard_Click(object sender, EventArgs e)
         {
-            //CurrentDifficulty = Difficulty.Hard;
             this.Hide();
 
             MainGame form3 = new MainGame(Difficulty.Hard);

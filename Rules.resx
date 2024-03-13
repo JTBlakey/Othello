@@ -63,7 +63,7 @@ Here are 10 simple rules to follow when playing Othello:
 
 Starting Player: Wether the Player or Computer go first will be decided by random. The starting player will be white.
 
-Turns: Players take turns placing one disc of their color on the board. The disc must be placed on an empty square adjacent to an opponent's disc in a way that encloses one or more of the opponent's discs between the new disc and another disc of the player's color.
+Turns: Players take turns placing one disc of their color on the board. The disc must be placed on an empty square adjacent to an opponent's disc so there is one or more of the opponent's discs between the new disc and another disc of the player's color.
 
 Flipping Discs: When a player places a disc, any opponent's discs that are enclosed in a straight line between the newly placed disc and another disc of the player's color are flipped to the player's color.
 

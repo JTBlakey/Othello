@@ -72,7 +72,7 @@
         }
         public void AImove(DifficultySet.Difficulty difficulty)
         {
-
+            
             if (difficulty == DifficultySet.Difficulty.Easy)
             {
                 AImove1();
@@ -228,8 +228,7 @@
                         }
                         else if (foundOpponentPiece)
                         {
-                            // If we've found an opponent piece and then the current piece is of the same color, flip the enclosed opponent pieces
-                            while (r != row || c != col)
+                            while (r != row || c != col)// if an opponent piece and then the current piece is of the same color, flip the enclosed opponent pieces
                             {
                                 cells[r, c].BackColor = (color == Piece.Black) ? Color.Black : Color.White;
                                 r -= dr;
@@ -242,7 +241,6 @@
                     }
                 }
             }
-            Thread.Sleep(150);
         }
 
         private List<Point> GetLegalMoves(Piece color)
