@@ -244,16 +244,16 @@
 
         private List<Point> GetLegalMoves(Piece color)
         {
-            List<Point> legalMoves = new List<Point>();
+            List<Point> legalMoves = new List<Point>(); // list of possible moves
 
             for (int row = 0; row < BoardSize; row++)
-            {
-                for (int col = 0; col < BoardSize; col++)
+            { 
+                for (int col = 0; col < BoardSize; col++)// cycle through each cell on the game board
                 {
 
-                    if (IsLegalMove(row, col, color) == true)
+                    if (IsLegalMove(row, col, color) == true) // if move legal add to the list
                     {
-                        legalMoves.Add(new Point(row, col));
+                        legalMoves.Add(new Point(row, col)); 
                     }
                 }
             }
@@ -279,7 +279,9 @@
                     int r = row + dr;
                     int c = col + dc;
                     bool foundOpponentPiece = false;
-                    while (r >= 0 && r < BoardSize && c >= 0 && c < BoardSize && cells[r, c].BackColor != Color.FromArgb(255, 252, 103, 54) && cells[r, c].BackColor != ((color == Piece.Black) ? Color.Black : Color.White))
+                    while (r >= 0 && r < BoardSize && c >= 0 && c < BoardSize &&
+                        cells[r, c].BackColor != Color.FromArgb(255, 252, 103, 54) &&
+                        cells[r, c].BackColor != ((color == Piece.Black) ? Color.Black : Color.White))
                     {
                         foundOpponentPiece = true;
                         r += dr;
@@ -289,7 +291,8 @@
                     }
 
                     // If an opponent piece and our own piece in this direction, the move is legal
-                    if (r >= 0 && r < BoardSize && c >= 0 && c < BoardSize && foundOpponentPiece && cells[r, c].BackColor == ((color == Piece.Black) ? Color.Black : Color.White))
+                    if (r >= 0 && r < BoardSize && c >= 0 && c < BoardSize && foundOpponentPiece &&
+                        cells[r, c].BackColor == ((color == Piece.Black) ? Color.Black : Color.White))
                         return true;
                 }
             }
