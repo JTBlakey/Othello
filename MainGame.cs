@@ -8,6 +8,15 @@
 
         public DifficultySet.Difficulty difficulty;
 
+        private void MainGame_Load(object sender, EventArgs e)
+        {
+            Random random = new Random();
+            int randomNumber = random.Next(1, 3); // generates random number between 1 and 2
+            if (randomNumber == 1)
+            {
+                AImove(this.difficulty);
+            }
+        }
         private void InitializeGameBoard()
         {
 
@@ -189,16 +198,6 @@
 
             InitializeComponent();
             InitializeGameBoard();
-        }
-
-        private void MainGame_Load(object sender, EventArgs e)
-        {
-            Random random = new Random();
-            int randomNumber = random.Next(1, 3); // generates random number between 1 and 2
-            if (randomNumber == 1)
-            {
-                AImove(this.difficulty);
-            }
         }
 
         private void Quit_Click_1(object sender, EventArgs e)
