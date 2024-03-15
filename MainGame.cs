@@ -1,4 +1,6 @@
-﻿namespace Othello
+﻿using System;
+
+namespace Othello
 {
 
     public partial class MainGame : Form
@@ -6,10 +8,12 @@
         private const int BoardSize = 8;
         private Button[,] cells;
 
+        public Color bgColor = Color.FromArgb(255, 252, 103, 54);
         public DifficultySet.Difficulty difficulty;
 
         private void MainGame_Load(object sender, EventArgs e)
         {
+            
             Random random = new Random();
             int randomNumber = random.Next(1, 3); // generates random number between 1 and 2
             if (randomNumber == 1)
@@ -72,10 +76,15 @@
             if (row != -1 && col != -1 && IsLegalMove(row, col, Piece.White)) // check if a legal move
             {
                 PlacePiece(row, col, Piece.White); // place the user's piece at the clicked position
+                Application.DoEvents();
+
+                Thread.Sleep(600);
+
                 AImove(this.difficulty);
             }
             else
             {
+                
                 // display a message saying the move not allowed
             }
         }
@@ -84,19 +93,19 @@
             
             if (difficulty == DifficultySet.Difficulty.Easy)
             {
-                AImove1();
+                AImoveEasy();
             }
             if (difficulty == DifficultySet.Difficulty.Medium)
             {
-                AImove2();
+                AImoveMedium();
             }
             if (difficulty == DifficultySet.Difficulty.Hard)
             {
-                AImove3();
+                AImoveHard();
             }
         }
 
-        public void AImove1()
+        public void AImoveEasy()
         {
 
             List<Point> legalMoves = GetLegalMoves(Piece.Black); // get all legal moves
@@ -114,7 +123,7 @@
                 GameEnd();
             }
         }
-        public void AImove2()
+        public void AImoveMedium()
         {
             List<Point> legalMoves = GetLegalMoves(Piece.Black); // get all legal moves for the computer (black pieces)
 
@@ -145,7 +154,7 @@
                 // the case where the computer cannot make any moves
             }
         }
-        public void AImove3()
+        public void AImoveHard()
         {
 
         }
@@ -219,7 +228,7 @@
                     int c = col + dc;
                     bool foundOpponentPiece = false;
 
-                    while (r >= 0 && r < BoardSize && c >= 0 && c < BoardSize && cells[r, c].BackColor != Color.FromArgb(255, 252, 103, 54)) // search in the current direction for opponent pieces
+                    while (r >= 0 && r < BoardSize && c >= 0 && c < BoardSize && cells[r, c].BackColor != bgColor) // search in the current direction for opponent pieces
                     {
                         if (cells[r, c].BackColor == ((color == Piece.Black) ? Color.White : Color.Black))
                         {
@@ -263,45 +272,87 @@
         private bool IsLegalMove(int row, int col, Piece color)
         {
             // Check if the specified position is empty
-            if (cells[row, col].BackColor != Color.FromArgb(255, 252, 103, 54))
+            if (cells[row, col].BackColor != bgColor)
                 return false;
 
             // Check in all eight directions for opponent pieces that can be flipped
-            for (int dr = -1; dr <= 1; dr++)
+            foreach ((int, int) d in new (int, int)[] { (-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1) })
             {
-                for (int dc = -1; dc <= 1; dc++)
+                int dr = d.Item1, dc = d.Item2;
+                int r = row + dr, c = col + dc;
+
+                // Check if an opponent piece in the current direction
+                bool foundOpponentPiece = false;
+                while (InRange(r, 0, BoardSize) && InRange(c, 0, BoardSize) &&
+                        cells[r, c].BackColor != bgColor &&
+                        cells[r, c].BackColor != PieceToColor(color))
                 {
-                    // Skip the current position(0, 0) as it represents the current cell
-                    if (dr == 0 && dc == 0)
-                        continue;
-
-                    // Check if an opponent piece in the current direction
-                    int r = row + dr;
-                    int c = col + dc;
-                    bool foundOpponentPiece = false;
-                    while (r >= 0 && r < BoardSize && c >= 0 && c < BoardSize &&
-                        cells[r, c].BackColor != Color.FromArgb(255, 252, 103, 54) &&
-                        cells[r, c].BackColor != ((color == Piece.Black) ? Color.Black : Color.White))
-                    {
-                        foundOpponentPiece = true;
-                        r += dr;
-                        c += dc;
-
-
-                    }
-
-                    // If an opponent piece and our own piece in this direction, the move is legal
-                    if (r >= 0 && r < BoardSize && c >= 0 && c < BoardSize && foundOpponentPiece &&
-                        cells[r, c].BackColor == ((color == Piece.Black) ? Color.Black : Color.White))
-                        return true;
+                    foundOpponentPiece = true;
+                    r += dr;
+                    c += dc;
                 }
+
+                // If an opponent piece and our own piece in this direction, the move is legal
+                if 
+                (
+                    InRange(r, 0, BoardSize) && InRange(c, 0, BoardSize) &&
+                    cells[r, c].BackColor == PieceToColor(color) && foundOpponentPiece
+                )
+                    return true;
             }
 
             return false; // No opponent pieces can be flipped in any direction, so the move is illegal
         }
+
+        public static bool InRange(int num, int min, int max)
+        {
+            return num >= min && num < max;
+        }
+
+        public Color PieceToColor(Piece piece)
+        {
+            switch (piece)
+            {
+                case Piece.Black:
+                    return Color.Black;
+                case Piece.White:
+                    return Color.White;
+                case Piece.Empty:
+                default:
+                    return bgColor;
+            }
+        }
         private void GameEnd()
         {
+            int blackCount = 0;
+            int whiteCount = 0;
 
+            // Count the number of black and white pieces on the board
+            for (int row = 0; row < BoardSize; row++)
+            {
+                for (int col = 0; col < BoardSize; col++)
+                {
+                    if (cells[row, col].BackColor == PieceToColor(Piece.Black))
+                    {
+                        blackCount++;
+                    }
+                    else if (cells[row, col].BackColor == PieceToColor(Piece.White))
+                    {
+                        whiteCount++;
+                    }
+                }
+            }
+
+            // Display the total count of black and white pieces
+            MessageBox.Show($"Black pieces: {blackCount}\nWhite pieces: {whiteCount}", "Game Over");
+        }
+
+        private void Back_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+
+            DifficultySet form2 = new DifficultySet();
+            form2.Show();
         }
     }
 }

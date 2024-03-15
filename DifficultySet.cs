@@ -65,5 +65,13 @@ namespace Othello
             MainGame form3 = new MainGame(Difficulty.Hard);
             form3.Show();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+
+            StartMenu form1 = new StartMenu();
+            form1.Show();
+        }
     }
 }
