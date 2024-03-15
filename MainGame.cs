@@ -326,6 +326,7 @@ namespace Othello
         {
             int blackCount = 0;
             int whiteCount = 0;
+            string winner = "";
 
             // Count the number of black and white pieces on the board
             for (int row = 0; row < BoardSize; row++)
@@ -342,9 +343,20 @@ namespace Othello
                     }
                 }
             }
-
+            if (blackCount > whiteCount)
+            {
+                winner = "oh dear the computer beat you better luck next time";
+            }
+            if (whiteCount > blackCount)
+            {
+                winner = "congratulations you won!!! can you beat the next difficulty?";
+            }
+            if (whiteCount == blackCount)
+            {
+                winner = "its a ties. well played";
+            }
             // Display the total count of black and white pieces
-            MessageBox.Show($"Black pieces: {blackCount}\nWhite pieces: {whiteCount}", "Game Over");
+            MessageBox.Show($"{winner}\nBlack pieces: {blackCount}\nWhite pieces: {whiteCount}", "Game Over");
         }
 
         private void Back_Click(object sender, EventArgs e)
