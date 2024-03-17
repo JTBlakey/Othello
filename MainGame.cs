@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 namespace Othello
 {
@@ -13,7 +14,7 @@ namespace Othello
 
         private void MainGame_Load(object sender, EventArgs e)
         {
-            
+           
             Random random = new Random();
             int randomNumber = random.Next(1, 3); // generates random number between 1 and 2
             if (randomNumber == 1)
@@ -58,35 +59,26 @@ namespace Othello
         private void UserMove(object sender, EventArgs e)
         {
             Button clickedButton = (Button)sender;
-            int row = -1, col = -1; // find coordinates of the clicked button
-            for (int i = 0; i < BoardSize; i++)
+             
+            for (int row = 0; row < BoardSize; row++) // find coordinates of the clicked button
             {
-                for (int j = 0; j < BoardSize; j++)
+                for (int col = 0; col < BoardSize; col++)
                 {
-                    if (cells[i, j] == clickedButton)
+                    if (cells[row, col] == clickedButton && IsLegalMove(row,col, Piece.White) == true)
                     {
-                        row = i;
-                        col = j;
-                        break;
+                        PlacePiece(row, col, Piece.White);
+
+                        Application.DoEvents();
+                        Thread.Sleep(600);
+
+                        AImove(this.difficulty);
+                    }
+                    else if (cells[row, col] == clickedButton && IsLegalMove(row, col, Piece.White) == false)
+                    {
+                        MessageBox.Show("You cannot place a piece there");
                     }
                 }
-                if (row != -1 && col != -1)
-                    break;
-            }
-            if (row != -1 && col != -1 && IsLegalMove(row, col, Piece.White)) // check if a legal move
-            {
-                PlacePiece(row, col, Piece.White); // place the user's piece at the clicked position
-                Application.DoEvents();
-
-                Thread.Sleep(600);
-
-                AImove(this.difficulty);
-            }
-            else
-            {
-                
-                // display a message saying the move not allowed
-            }
+            }           
         }
         public void AImove(DifficultySet.Difficulty difficulty)
         {
@@ -215,20 +207,21 @@ namespace Othello
         }
         private void PlacePiece(int row, int col, Piece color)
         {
-            cells[row, col].BackColor = (color == Piece.Black) ? Color.Black : Color.White; // update the cell colour to the player's colour
-
-            for (int dr = -1; dr <= 1; dr++) // flip opponent's pieces
+            cells[row, col].BackColor = (color == Piece.Black) ? Color.Black : Color.White; 
+                                                            // update the cell colour to the player's colour
+            for (int dr = -1; dr <= 1; dr++)
             {
-                for (int dc = -1; dc <= 1; dc++)
+                for (int dc = -1; dc <= 1; dc++)            // flip opponent's pieces
                 {
                     if (dr == 0 && dc == 0)
-                        continue; // skip the current position
+                        continue;                           // skip the current position
 
                     int r = row + dr;
                     int c = col + dc;
                     bool foundOpponentPiece = false;
 
-                    while (r >= 0 && r < BoardSize && c >= 0 && c < BoardSize && cells[r, c].BackColor != bgColor) // search in the current direction for opponent pieces
+                    while (r >= 0 && r < BoardSize && c >= 0 && c < BoardSize &&
+                        cells[r, c].BackColor != bgColor)   // search in the current direction for opponent pieces
                     {
                         if (cells[r, c].BackColor == ((color == Piece.Black) ? Color.White : Color.Black))
                         {
@@ -236,7 +229,8 @@ namespace Othello
                         }
                         else if (foundOpponentPiece)
                         {
-                            while (r != row || c != col)// if an opponent piece and then the current piece is of the same color, flip the enclosed opponent pieces
+                            while (r != row || c != col)    // if an opponent piece and then the current piece is
+                                                            // of the same color, flip the enclosed opponent pieces
                             {
                                 cells[r, c].BackColor = (color == Piece.Black) ? Color.Black : Color.White;
                                 r -= dr;
@@ -328,7 +322,7 @@ namespace Othello
             int whiteCount = 0;
             string winner = "";
 
-            // Count the number of black and white pieces on the board
+            // count the number of black and white pieces on the board
             for (int row = 0; row < BoardSize; row++)
             {
                 for (int col = 0; col < BoardSize; col++)
@@ -355,7 +349,7 @@ namespace Othello
             {
                 winner = "its a ties. well played";
             }
-            // Display the total count of black and white pieces
+            // display the total count of black and white pieces
             MessageBox.Show($"{winner}\nBlack pieces: {blackCount}\nWhite pieces: {whiteCount}", "Game Over");
         }
 
