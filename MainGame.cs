@@ -112,6 +112,7 @@ namespace Othello
             }
             else
             {
+                //if GetLegalMove(Piece.White) == 0 
                 GameEnd();
             }
         }
@@ -148,31 +149,67 @@ namespace Othello
         }
         public void AImoveHard()
         {
+            List<Point> legalMoves = GetLegalMoves(Piece.Black); // get all legal moves for the computer (black pieces)
 
+            if (legalMoves.Count > 0)
+            {
+                int bestScore = int.MinValue;
+                Point bestMove = new Point(-1, -1);
+
+                foreach (Point move in legalMoves) // go through each legal move
+                {
+                    int score = EvaluateMove(move.X, move.Y, Piece.Black, 5); // evaluate the move using a depth of 
+
+
+                    if (score > bestScore) // update the best move if the current move has a higher score
+                    {
+                        bestScore = score;
+                        bestMove = move;
+                    }
+                }
+
+                if (bestMove.X != -1 && bestMove.Y != -1) // perform the best move
+                {
+                    PlacePiece(bestMove.X, bestMove.Y, Piece.Black);
+                }
+            }
+            else
+            {
+                // the case where the computer cannot make any moves
+            }
         }
 
         private int EvaluateMove(int row, int col, Piece color, int depth)
         {
             int score = 0;
 
-            if ((row == 0 || row == BoardSize - 1) && (col == 0 || col == BoardSize - 1)) // if the move is on a corner cell assign a high score
+            // If the move is on a corner cell, assign a high score
+            if ((row == 0 || row == BoardSize - 1) && (col == 0 || col == BoardSize - 1))
             {
                 score += 1000;
             }
 
-            for (int dr = -1; dr <= 1; dr++) // calculate the number of opponent pieces flipped by making the move
+            // If the move is on an edge cell, assign a high score
+            if (row == 0 || row == BoardSize - 1 || col == 0 || col == BoardSize - 1)
+            {
+                score += 1000;
+            }
+
+            // Calculate the number of opponent pieces flipped by making the move
+            for (int dr = -1; dr <= 1; dr++)
             {
                 for (int dc = -1; dc <= 1; dc++)
                 {
                     if (dr == 0 && dc == 0)
-                        continue; // skip the current position
+                        continue; // Skip the current position
 
                     int r = row + dr;
                     int c = col + dc;
                     bool foundOpponentPiece = false;
                     int flippedPieces = 0;
 
-                    while (r >= 0 && r < BoardSize && c >= 0 && c < BoardSize && cells[r, c].BackColor != Color.Empty) // search in the current direction for opponent pieces
+                    // Search in the current direction for opponent pieces
+                    while (r >= 0 && r < BoardSize && c >= 0 && c < BoardSize && cells[r, c].BackColor != Color.Empty)
                     {
                         if (cells[r, c].BackColor == ((color == Piece.Black) ? Color.White : Color.Black))
                         {
@@ -181,12 +218,23 @@ namespace Othello
                         }
                         else if (foundOpponentPiece)
                         {
-                            score += flippedPieces; // increment score based on the number of flipped opponent pieces
+                            score += flippedPieces; // Increment score based on the number of flipped opponent pieces
                             break;
                         }
                         r += dr;
                         c += dc;
                     }
+                }
+            }
+
+            // Evaluate the move recursively with a depth of 1
+            if (depth > 1)
+            {
+                List<Point> opponentMoves = GetLegalMoves((color == Piece.Black) ? Piece.White : Piece.Black);
+                foreach (Point move in opponentMoves)
+                {
+                    int opponentScore = EvaluateMove(move.X, move.Y, (color == Piece.Black) ? Piece.White : Piece.Black, depth - 1);
+                    score -= opponentScore; // Subtract the opponent's score from the current score
                 }
             }
 
