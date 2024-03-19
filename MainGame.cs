@@ -183,63 +183,87 @@ namespace Othello
         {
             int score = 0;
 
-            // If the move is on a corner cell, assign a high score
+            // If the move is on a corner cell, assign a very high score
             if ((row == 0 || row == BoardSize - 1) && (col == 0 || col == BoardSize - 1))
             {
-                score += 1000;
+                score += 10000;
             }
-
             // If the move is on an edge cell, assign a high score
-            if (row == 0 || row == BoardSize - 1 || col == 0 || col == BoardSize - 1)
+            else if (row == 0 || row == BoardSize - 1 || col == 0 || col == BoardSize - 1)
             {
                 score += 1000;
-            }
-
-            // Calculate the number of opponent pieces flipped by making the move
-            for (int dr = -1; dr <= 1; dr++)
-            {
-                for (int dc = -1; dc <= 1; dc++)
-                {
-                    if (dr == 0 && dc == 0)
-                        continue; // Skip the current position
-
-                    int r = row + dr;
-                    int c = col + dc;
-                    bool foundOpponentPiece = false;
-                    int flippedPieces = 0;
-
-                    // Search in the current direction for opponent pieces
-                    while (r >= 0 && r < BoardSize && c >= 0 && c < BoardSize && cells[r, c].BackColor != Color.Empty)
-                    {
-                        if (cells[r, c].BackColor == ((color == Piece.Black) ? Color.White : Color.Black))
-                        {
-                            foundOpponentPiece = true;
-                            flippedPieces++;
-                        }
-                        else if (foundOpponentPiece)
-                        {
-                            score += flippedPieces; // Increment score based on the number of flipped opponent pieces
-                            break;
-                        }
-                        r += dr;
-                        c += dc;
-                    }
-                }
             }
 
             // Evaluate the move recursively with a depth of 1
             if (depth > 1)
             {
+                // Calculate the mobility (number of legal moves) for the opponent
                 List<Point> opponentMoves = GetLegalMoves((color == Piece.Black) ? Piece.White : Piece.Black);
+                int opponentMobility = opponentMoves.Count;
+
+                // Calculate the stability (number of stable discs) for the opponent
+                int opponentStability = CalculateStability((color == Piece.Black) ? Piece.White : Piece.Black);
+
+                // Evaluate the potential moves for the opponent with a depth of 1
                 foreach (Point move in opponentMoves)
                 {
                     int opponentScore = EvaluateMove(move.X, move.Y, (color == Piece.Black) ? Piece.White : Piece.Black, depth - 1);
                     score -= opponentScore; // Subtract the opponent's score from the current score
                 }
+
+                // Apply mobility and stability factors to the score
+                score += (opponentMobility - GetLegalMoves(color).Count) * 10;
+                score += (GetStability(color) - opponentStability) * 100;
             }
 
             return score;
         }
+
+        private int CalculateStability(Piece color)
+        {
+            int stability = 0;
+            Piece opponentColor = (color == Piece.Black) ? Piece.White : Piece.Black;
+
+            // Iterate through each cell of the board
+            for (int row = 0; row < BoardSize; row++)
+            {
+                for (int col = 0; col < BoardSize; col++)
+                {
+                    if (cells[row, col].BackColor == ((color == Piece.Black) ? Color.White : Color.Black))
+                    {
+                        // Check if the disc is stable
+                        if (IsStable(row, col, color))
+                        {
+                            stability++;
+                        }
+                    }
+                }
+            }
+
+            return stability;
+        }
+
+        private bool IsStable(int row, int col, Piece color)
+        {
+            // Implement stability checking logic here
+            // This could involve checking if the disc is surrounded by same-colored discs in all directions
+            // Or if it's located in a corner or along an edge
+
+            // Example: For simplicity, let's assume discs on the edges and corners are stable
+            if (row == 0 || row == BoardSize - 1 || col == 0 || col == BoardSize - 1)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private int GetStability(Piece color)
+        {
+            // Just return the stability calculated previously
+            return CalculateStability(color);
+        }
+
 
         public MainGame(DifficultySet.Difficulty difficulty)
         {
