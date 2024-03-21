@@ -59,7 +59,7 @@ namespace Othello
         private void UserMove(object sender, EventArgs e)
         {
             Button clickedButton = (Button)sender;
-             
+            
             for (int row = 0; row < BoardSize; row++) // find coordinates of the clicked button
             {
                 for (int col = 0; col < BoardSize; col++)
@@ -67,7 +67,7 @@ namespace Othello
                     if (cells[row, col] == clickedButton && IsLegalMove(row,col, Piece.White) == true)
                     {
                         PlacePiece(row, col, Piece.White);
-
+                        Score();
                         Application.DoEvents();
                         Thread.Sleep(600);
 
@@ -78,7 +78,7 @@ namespace Othello
                         MessageBox.Show("You cannot place a piece there");
                     }
                 }
-            }           
+            }
         }
         public void AImove(DifficultySet.Difficulty difficulty)
         {
@@ -109,6 +109,7 @@ namespace Othello
                 Point selectedMove = legalMoves[randomIndex];
 
                 PlacePiece(selectedMove.X, selectedMove.Y, Piece.Black); // perform the move
+                Score();
             }
             else
             {
@@ -140,11 +141,13 @@ namespace Othello
                 if (bestMove.X != -1 && bestMove.Y != -1) // perform the best move
                 {
                     PlacePiece(bestMove.X, bestMove.Y, Piece.Black);
+                    Score();
                 }
             }
             else
             {
                 // the case where the computer cannot make any moves
+                GameEnd();
             }
         }
         public void AImoveHard()
@@ -171,11 +174,13 @@ namespace Othello
                 if (bestMove.X != -1 && bestMove.Y != -1) // perform the best move
                 {
                     PlacePiece(bestMove.X, bestMove.Y, Piece.Black);
+                    Score();
                 }
             }
             else
             {
                 // the case where the computer cannot make any moves
+                GameEnd();
             }
         }
 
@@ -431,6 +436,35 @@ namespace Othello
 
             DifficultySet form2 = new DifficultySet();
             form2.Show();
+        }
+
+        private void Score()
+        {
+
+            int blackCount = 0;
+            int whiteCount = 0;
+
+            // count the number of black and white pieces on the board
+            for (int row = 0; row < BoardSize; row++)
+            {
+                for (int col = 0; col < BoardSize; col++)
+                {
+                    if (cells[row, col].BackColor == PieceToColor(Piece.Black))
+                    {
+                        blackCount++;
+                    }
+                    else if (cells[row, col].BackColor == PieceToColor(Piece.White))
+                    {
+                        whiteCount++;
+                    }
+                }
+            }
+            ScoreBoard.Text = $"White pieces: {whiteCount}         Black pieces: { blackCount}";
+        }
+
+        private void ScoreBoard_TextChanged(object sender, EventArgs e)
+        {
+            
         }
     }
 }
