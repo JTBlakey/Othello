@@ -440,7 +440,6 @@ namespace Othello
 
         private void Score()
         {
-
             int blackCount = 0;
             int whiteCount = 0;
 
@@ -457,7 +456,7 @@ namespace Othello
                     {
                         whiteCount++;
                     }
-                }
+                } // update the textbox
             }
             ScoreBoard.Text = $"White pieces: {whiteCount}         Black pieces: { blackCount}";
         }

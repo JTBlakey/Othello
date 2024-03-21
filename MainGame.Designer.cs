@@ -32,6 +32,7 @@
             this.board = new System.Windows.Forms.TableLayoutPanel();
             this.Back = new System.Windows.Forms.Button();
             this.ScoreBoard = new System.Windows.Forms.TextBox();
+            this.Timer = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // Quit
@@ -99,9 +100,22 @@
             this.ScoreBoard.Location = new System.Drawing.Point(94, 12);
             this.ScoreBoard.Multiline = true;
             this.ScoreBoard.Name = "ScoreBoard";
+            this.ScoreBoard.ReadOnly = true;
             this.ScoreBoard.Size = new System.Drawing.Size(389, 109);
             this.ScoreBoard.TabIndex = 13;
             this.ScoreBoard.TextChanged += new System.EventHandler(this.ScoreBoard_TextChanged);
+            // 
+            // Timer
+            // 
+            this.Timer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(103)))), ((int)(((byte)(54)))));
+            this.Timer.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.Timer.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.Timer.Location = new System.Drawing.Point(489, 12);
+            this.Timer.Multiline = true;
+            this.Timer.Name = "Timer";
+            this.Timer.ReadOnly = true;
+            this.Timer.Size = new System.Drawing.Size(210, 109);
+            this.Timer.TabIndex = 14;
             // 
             // MainGame
             // 
@@ -109,6 +123,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(45)))), ((int)(((byte)(87)))));
             this.ClientSize = new System.Drawing.Size(805, 908);
+            this.Controls.Add(this.Timer);
             this.Controls.Add(this.ScoreBoard);
             this.Controls.Add(this.Back);
             this.Controls.Add(this.board);
@@ -127,5 +142,6 @@
         private TableLayoutPanel board;
         private Button Back;
         private TextBox ScoreBoard;
+        private TextBox Timer;
     }
 }
