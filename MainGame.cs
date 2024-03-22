@@ -59,7 +59,7 @@ namespace Othello
         private void UserMove(object sender, EventArgs e)
         {
             Button clickedButton = (Button)sender;
-             
+            
             for (int row = 0; row < BoardSize; row++) // find coordinates of the clicked button
             {
                 for (int col = 0; col < BoardSize; col++)
@@ -67,7 +67,7 @@ namespace Othello
                     if (cells[row, col] == clickedButton && IsLegalMove(row,col, Piece.White) == true)
                     {
                         PlacePiece(row, col, Piece.White);
-
+                        Score();
                         Application.DoEvents();
                         Thread.Sleep(600);
 
@@ -78,7 +78,7 @@ namespace Othello
                         MessageBox.Show("You cannot place a piece there");
                     }
                 }
-            }           
+            }
         }
         public void AImove(DifficultySet.Difficulty difficulty)
         {
@@ -109,9 +109,11 @@ namespace Othello
                 Point selectedMove = legalMoves[randomIndex];
 
                 PlacePiece(selectedMove.X, selectedMove.Y, Piece.Black); // perform the move
+                Score();
             }
             else
             {
+                //if GetLegalMove(Piece.White) == 0 
                 GameEnd();
             }
         }
@@ -139,59 +141,134 @@ namespace Othello
                 if (bestMove.X != -1 && bestMove.Y != -1) // perform the best move
                 {
                     PlacePiece(bestMove.X, bestMove.Y, Piece.Black);
+                    Score();
                 }
             }
             else
             {
                 // the case where the computer cannot make any moves
+                GameEnd();
             }
         }
         public void AImoveHard()
         {
+            List<Point> legalMoves = GetLegalMoves(Piece.Black); // get all legal moves for the computer (black pieces)
 
+            if (legalMoves.Count > 0)
+            {
+                int bestScore = int.MinValue;
+                Point bestMove = new Point(-1, -1);
+
+                foreach (Point move in legalMoves) // go through each legal move
+                {
+                    int score = EvaluateMove(move.X, move.Y, Piece.Black, 5); // evaluate the move using a depth of 
+
+
+                    if (score > bestScore) // update the best move if the current move has a higher score
+                    {
+                        bestScore = score;
+                        bestMove = move;
+                    }
+                }
+
+                if (bestMove.X != -1 && bestMove.Y != -1) // perform the best move
+                {
+                    PlacePiece(bestMove.X, bestMove.Y, Piece.Black);
+                    Score();
+                }
+            }
+            else
+            {
+                // the case where the computer cannot make any moves
+                GameEnd();
+            }
         }
 
         private int EvaluateMove(int row, int col, Piece color, int depth)
         {
             int score = 0;
 
-            if ((row == 0 || row == BoardSize - 1) && (col == 0 || col == BoardSize - 1)) // if the move is on a corner cell assign a high score
+            // If the move is on a corner cell, assign a very high score
+            if ((row == 0 || row == BoardSize - 1) && (col == 0 || col == BoardSize - 1))
+            {
+                score += 10000;
+            }
+            // If the move is on an edge cell, assign a high score
+            else if (row == 0 || row == BoardSize - 1 || col == 0 || col == BoardSize - 1)
             {
                 score += 1000;
             }
 
-            for (int dr = -1; dr <= 1; dr++) // calculate the number of opponent pieces flipped by making the move
+            // Evaluate the move recursively with a depth of 1
+            if (depth > 1)
             {
-                for (int dc = -1; dc <= 1; dc++)
+                // Calculate the mobility (number of legal moves) for the opponent
+                List<Point> opponentMoves = GetLegalMoves((color == Piece.Black) ? Piece.White : Piece.Black);
+                int opponentMobility = opponentMoves.Count;
+
+                // Calculate the stability (number of stable discs) for the opponent
+                int opponentStability = CalculateStability((color == Piece.Black) ? Piece.White : Piece.Black);
+
+                // Evaluate the potential moves for the opponent with a depth of 1
+                foreach (Point move in opponentMoves)
                 {
-                    if (dr == 0 && dc == 0)
-                        continue; // skip the current position
-
-                    int r = row + dr;
-                    int c = col + dc;
-                    bool foundOpponentPiece = false;
-                    int flippedPieces = 0;
-
-                    while (r >= 0 && r < BoardSize && c >= 0 && c < BoardSize && cells[r, c].BackColor != Color.Empty) // search in the current direction for opponent pieces
-                    {
-                        if (cells[r, c].BackColor == ((color == Piece.Black) ? Color.White : Color.Black))
-                        {
-                            foundOpponentPiece = true;
-                            flippedPieces++;
-                        }
-                        else if (foundOpponentPiece)
-                        {
-                            score += flippedPieces; // increment score based on the number of flipped opponent pieces
-                            break;
-                        }
-                        r += dr;
-                        c += dc;
-                    }
+                    int opponentScore = EvaluateMove(move.X, move.Y, (color == Piece.Black) ? Piece.White : Piece.Black, depth - 1);
+                    score -= opponentScore; // Subtract the opponent's score from the current score
                 }
+
+                // Apply mobility and stability factors to the score
+                score += (opponentMobility - GetLegalMoves(color).Count) * 10;
+                score += (GetStability(color) - opponentStability) * 100;
             }
 
             return score;
         }
+
+        private int CalculateStability(Piece color)
+        {
+            int stability = 0;
+            Piece opponentColor = (color == Piece.Black) ? Piece.White : Piece.Black;
+
+            // Iterate through each cell of the board
+            for (int row = 0; row < BoardSize; row++)
+            {
+                for (int col = 0; col < BoardSize; col++)
+                {
+                    if (cells[row, col].BackColor == ((color == Piece.Black) ? Color.White : Color.Black))
+                    {
+                        // Check if the disc is stable
+                        if (IsStable(row, col, color))
+                        {
+                            stability++;
+                        }
+                    }
+                }
+            }
+
+            return stability;
+        }
+
+        private bool IsStable(int row, int col, Piece color)
+        {
+            // Implement stability checking logic here
+            // This could involve checking if the disc is surrounded by same-colored discs in all directions
+            // Or if it's located in a corner or along an edge
+
+            // Example: For simplicity, let's assume discs on the edges and corners are stable
+            if (row == 0 || row == BoardSize - 1 || col == 0 || col == BoardSize - 1)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private int GetStability(Piece color)
+        {
+            // Just return the stability calculated previously
+            return CalculateStability(color);
+        }
+
 
         public MainGame(DifficultySet.Difficulty difficulty)
         {
@@ -359,6 +436,34 @@ namespace Othello
 
             DifficultySet form2 = new DifficultySet();
             form2.Show();
+        }
+
+        private void Score()
+        {
+            int blackCount = 0;
+            int whiteCount = 0;
+
+            // count the number of black and white pieces on the board
+            for (int row = 0; row < BoardSize; row++)
+            {
+                for (int col = 0; col < BoardSize; col++)
+                {
+                    if (cells[row, col].BackColor == PieceToColor(Piece.Black))
+                    {
+                        blackCount++;
+                    }
+                    else if (cells[row, col].BackColor == PieceToColor(Piece.White))
+                    {
+                        whiteCount++;
+                    }
+                } // update the textbox
+            }
+            ScoreBoard.Text = $"White pieces: {whiteCount}         Black pieces: { blackCount}";
+        }
+
+        private void ScoreBoard_TextChanged(object sender, EventArgs e)
+        {
+            
         }
     }
 }
