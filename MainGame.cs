@@ -39,8 +39,8 @@ namespace Othello
                     cell.FlatStyle = FlatStyle.Flat; //remove 3d effect of button
                     cell.FlatAppearance.BorderSize = 1; //adds a border to the button
                     cell.Click += UserMove; // adds an event handler to the press of a button
-                    board.Controls.Add(cell, col, row); // adds button to the speciffied cell
-                    cells[row, col] = cell; // stores a referance to the button in an array: cells
+                    board.Controls.Add(cell, col, row); // adds button to the specified cell
+                    cells[row, col] = cell; // stores a reference to the button in an array: cells
                 }
             }
             int middleLocation = 4; //set up four starting pieces
