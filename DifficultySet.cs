@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Media;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +20,8 @@ namespace Othello
     }
     public partial class DifficultySet : Form
     {
+        private SoundPlayer soundPlayer;
+
         //public static Difficulty CurrentDifficulty { get; set; }
 
         public enum Difficulty
@@ -30,6 +33,8 @@ namespace Othello
         public DifficultySet()
         {
             InitializeComponent();
+
+            soundPlayer = new SoundPlayer(Properties.Resources.ButtonClickSound);
         }
 
         private void Quit_Click(object sender, EventArgs e)
@@ -46,6 +51,7 @@ namespace Othello
         {
             this.Hide();
 
+            soundPlayer.Play();
             MainGame form3 = new MainGame(Difficulty.Easy);
             form3.Show();
         }
@@ -54,6 +60,7 @@ namespace Othello
         {
             this.Hide();
 
+            soundPlayer.Play();
             MainGame form3 = new MainGame(Difficulty.Medium);
             form3.Show();
         }
@@ -62,6 +69,7 @@ namespace Othello
         {
             this.Hide();
 
+            soundPlayer.Play();
             MainGame form3 = new MainGame(Difficulty.Hard);
             form3.Show();
         }
@@ -70,6 +78,7 @@ namespace Othello
         {
             this.Hide();
 
+            soundPlayer.Play();
             StartMenu form1 = new StartMenu();
             form1.Show();
         }

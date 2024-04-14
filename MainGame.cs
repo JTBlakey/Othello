@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Media;
 using System.Reflection;
 
 namespace Othello
 {
-
+    
     public partial class MainGame : Form
     {
+        private SoundPlayer soundPlayer;
+
         private const int BoardSize = 8;
         private Button[,] cells;
 
@@ -276,6 +279,8 @@ namespace Othello
 
             InitializeComponent();
             InitializeGameBoard();
+
+            soundPlayer = new SoundPlayer(Properties.Resources.ButtonClickSound);
         }
 
         private void Quit_Click_1(object sender, EventArgs e)
@@ -434,6 +439,7 @@ namespace Othello
         {
             this.Hide();
 
+            soundPlayer.Play();
             DifficultySet form2 = new DifficultySet();
             form2.Show();
         }
