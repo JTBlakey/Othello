@@ -464,7 +464,7 @@ namespace Othello
                     }
                 } // update the textbox
             }
-            ScoreBoard.Text = $"White pieces: {whiteCount}         Black pieces: { blackCount}";
+            ScoreBoard.Text = ($"White pieces: {whiteCount}") + Environment.NewLine + ($"Black pieces: { blackCount}");
         }
 
         private void ScoreBoard_TextChanged(object sender, EventArgs e)
